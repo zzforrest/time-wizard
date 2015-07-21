@@ -2,14 +2,27 @@ package net.zzforrest.base;
 
 import java.awt.Graphics;
 
-public abstract class Game
+public class Game
 {
+	protected Scene scene;
+	
 	public Game()
 	{
-		
+		scene = new Scene();
 	}
 	
-	public abstract void input(Input input);
-	public abstract void update();
-	public abstract void render(Graphics g);
+	public void input(Input input)
+	{
+		scene.input(input);
+	}
+	
+	public void update()
+	{
+		scene.update();
+	}
+	
+	public void render(Graphics g)
+	{
+		scene.render(g);
+	}
 }

@@ -210,7 +210,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, F
 	 */
 	public void update()
 	{
-		keysLast  = Arrays.copyOf(keysDown, keysDown.length);  //why must arrays be difficult
+		keysLast  = Arrays.copyOf(keysDown, keysDown.length);  // Why must arrays be difficult
 		mouseLast = Arrays.copyOf(mouseDown, mouseDown.length);
 	}
 	
