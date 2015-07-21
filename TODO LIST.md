@@ -5,11 +5,15 @@
 TODO
 
 - Add an AABB system of hitboxes
-- Merge input and update methods
 - Resource system
 - Physics / Collision
 - Audio system
 - Animation system
 - Add KeyEvent / MouseEvent constants to Input
+- Particle system
+? Convert audio to OpenAL
+? Convert graphics to OpenGL
 
 DONE
++ Flag system for entities
++ Merge input and update methods

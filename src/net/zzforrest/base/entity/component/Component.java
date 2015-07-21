@@ -14,12 +14,7 @@ public class Component
 		
 	}
 	
-	public void input(Input input)
-	{
-		
-	}
-	
-	public void update()
+	public void update(Input input)
 	{
 		
 	}

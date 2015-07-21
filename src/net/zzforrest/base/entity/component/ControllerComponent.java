@@ -19,7 +19,7 @@ public class ControllerComponent extends Component
 	}
 	
 	@Override
-	public void input(Input input)
+	public void update(Input input)
 	{
 		int impulsex = 0;
 		int impulsey = 0;

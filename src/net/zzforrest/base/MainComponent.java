@@ -133,9 +133,7 @@ public class MainComponent extends JPanel implements Runnable
 			/*
 			 * Game logic
 			 */
-			game.update();
-			game.input(input);
-			
+			game.update(input);
 			input.update();
 			repaint();
 			

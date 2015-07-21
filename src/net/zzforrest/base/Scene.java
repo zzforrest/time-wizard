@@ -17,13 +17,7 @@ public class Scene
 		entities = new ArrayList<>();
 	}
 	
-	public void input(Input input)
-	{
-		for(Entity entity : entities)
-			entity.input(input);
-	}
-	
-	public void update()
+	public void update(Input input)
 	{
 		//TODO: Collision
 		
@@ -32,7 +26,7 @@ public class Scene
 		 */
 		
 		for(Entity entity : entities)
-			entity.update();
+			entity.update(input);
 		
 		/*
 		 * Remove dead entities

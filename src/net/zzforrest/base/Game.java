@@ -11,14 +11,9 @@ public class Game
 		scene = new Scene();
 	}
 	
-	public void input(Input input)
+	public void update(Input input)
 	{
-		scene.input(input);
-	}
-	
-	public void update()
-	{
-		scene.update();
+		scene.update(input);
 	}
 	
 	public void render(Graphics g)

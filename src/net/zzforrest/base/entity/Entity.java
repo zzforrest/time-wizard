@@ -16,12 +16,20 @@ import net.zzforrest.base.entity.component.Component;
 public class Entity
 {
 	/*
+	 * List of predefined flags
+	 */
+	public static final long FLAG_PLAYER = 0 << 0; // The current entity is a player
+	public static final long FLAG_ENEMY  = 0 << 1; // The current entity is an enemy
+	
+	/*
 	 * Scene information
 	 * 
 	 * scene - the scene in which this entity exists
+	 * flags - bit list style flag system, can have 63 total flags (darn you signage!)
 	 * dead  - true if this entity needs to be removed from the scene
 	 */
 	protected Scene scene;
+	protected long flags;
 	protected boolean dead;
 	
 	/* 
@@ -55,16 +63,10 @@ public class Entity
 		components = new ArrayList<>();
 	}
 	
-	public void input(Input input)
+	public void update(Input input)
 	{
 		for(Component component : components)
-			component.input(input);
-	}
-	
-	public void update()
-	{
-		for(Component component : components)
-			component.update();
+			component.update(input);
 		
 		x += xvel * MainComponent.DELTA;
 		y += yvel * MainComponent.DELTA;
@@ -74,6 +76,40 @@ public class Entity
 	{
 		for(Component component : components)
 			component.render(g);
+	}
+	
+	/**
+	 * @param flag
+	 * 			Flag to be added
+	 * @return itself
+	 */
+	public Entity addFlag(long flag)
+	{
+		flags = (flags | flag);
+		
+		return this;
+	}
+	
+	/**
+	 * @param flag
+	 * 			Flag to be removed
+	 * @return itself
+	 */
+	public Entity removeFlag(long flag)
+	{
+		flags = (flags & ~flag);
+		
+		return this;
+	}
+	
+	/**
+	 * @param flag
+	 * 			Flag or flags (combined with or (|) operation) to be tested
+	 * @return true if the entity has all flags given
+	 */
+	public boolean hasFlags(long flag)
+	{
+		return (flags & flag) == flag;
 	}
 	
 	/**

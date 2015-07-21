@@ -15,12 +15,23 @@ public class TWGame extends Game
 		
 		Entity player = new Entity(scene)
 			.addComponent(new DrawHitboxComponent())
-			.addComponent(new ControllerComponent(100));
+			.addComponent(new ControllerComponent(100))
+			.addFlag(Entity.FLAG_PLAYER)
+			.addFlag(Entity.FLAG_ENEMY);
 		player.setX(100);
 		player.setY(100);
 		player.setW(32);
 		player.setH(32);
 		
 		scene.addEntity(player);
+
+		if(player.hasFlags(Entity.FLAG_ENEMY))
+			System.out.println("The player is an enemy");
+
+		if(player.hasFlags(Entity.FLAG_PLAYER))
+			System.out.println("The player is a player");
+		
+		if(player.hasFlags(Entity.FLAG_ENEMY | Entity.FLAG_PLAYER))
+			System.out.println("The player is a doublecrosser!");
 	}
 }
