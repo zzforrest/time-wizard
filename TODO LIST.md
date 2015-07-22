@@ -4,9 +4,10 @@
 
 TODO
 
-- Add an AABB system of hitboxes
+- Simplify entity's getters / setters
+- Clean up physics / collision
+- Menu system
 - Resource system
-- Physics / Collision
 - Audio system
 - Animation system
 - Add KeyEvent / MouseEvent constants to Input
@@ -17,3 +18,5 @@ TODO
 DONE
 + Flag system for entities
 + Merge input and update methods
++ Add an AABB system of hitboxes
++ Physics / Collision

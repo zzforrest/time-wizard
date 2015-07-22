@@ -9,10 +9,22 @@ import java.awt.Graphics;
  */
 public class DrawHitboxComponent extends Component
 {
+	private Color color;
+	
+	public DrawHitboxComponent()
+	{
+		color = Color.black;
+	}
+	
+	public DrawHitboxComponent(Color color)
+	{
+		this.color = color;
+	}
+	
 	@Override
 	public void render(Graphics g)
 	{
-		g.setColor(Color.black);
-		g.drawRect((int)parent.getX(), (int)parent.getY(), (int)parent.getW(), (int)parent.getH());
+		g.setColor(color);
+		g.drawRect((int)parent.getAABB().getX(), (int)parent.getAABB().getY(), (int)parent.getAABB().getW(), (int)parent.getAABB().getH());
 	}
 }

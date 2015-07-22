@@ -1,8 +1,9 @@
-package net.zzforrest.base.entity.component;
+package net.zzforrest.timewizard.game;
 
 import com.sun.glass.events.KeyEvent;
 
 import net.zzforrest.base.Input;
+import net.zzforrest.base.entity.component.Component;
 
 /*
  * Extremely barebones controller which allows for movement in 4 directions

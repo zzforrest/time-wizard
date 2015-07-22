@@ -24,6 +24,11 @@ public class Component
 		
 	}
 	
+	public void collide(Entity entity)
+	{
+		
+	}
+	
 	public void setParent(Entity parent)
 	{
 		this.parent = parent;

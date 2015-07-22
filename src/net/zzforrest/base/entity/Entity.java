@@ -7,6 +7,7 @@ import net.zzforrest.base.Input;
 import net.zzforrest.base.MainComponent;
 import net.zzforrest.base.Scene;
 import net.zzforrest.base.entity.component.Component;
+import net.zzforrest.base.physics.AABB;
 
 /*
  * A basic entity class
@@ -18,8 +19,7 @@ public class Entity
 	/*
 	 * List of predefined flags
 	 */
-	public static final long FLAG_PLAYER = 0 << 0; // The current entity is a player
-	public static final long FLAG_ENEMY  = 0 << 1; // The current entity is an enemy
+	public static final long FLAG_SOLID          = 1 << 0; // Other entities cannot overlap this one
 	
 	/*
 	 * Scene information
@@ -35,17 +35,11 @@ public class Entity
 	/* 
 	 * Spatial information
 	 * 
-	 * x    - x coordinate
-	 * y    - y coordinate
-	 * w    - width
-	 * h    - height
+	 * aabb - collision information
 	 * xvel - x velocity in pixels / second
 	 * yvel - y velocity in pixels / second
 	 */
-	protected float x;
-	protected float y;
-	protected float w;
-	protected float h;
+	protected AABB aabb;
 	protected float xvel;
 	protected float yvel;
 	
@@ -60,6 +54,7 @@ public class Entity
 	{
 		this.scene = scene;
 		
+		aabb       = new AABB();
 		components = new ArrayList<>();
 	}
 	
@@ -68,8 +63,87 @@ public class Entity
 		for(Component component : components)
 			component.update(input);
 		
-		x += xvel * MainComponent.DELTA;
-		y += yvel * MainComponent.DELTA;
+		/*
+		 * Collision
+		 */
+		
+		/*
+		 * If this entity isn't moving, don't proceed with the next part
+		 */
+		if(xvel == 0 && yvel == 0)
+			return;
+		
+		/*
+		 * Horizontal collision
+		 */
+
+		ArrayList<Entity> entities = scene.getEntities();
+		
+		float dx = xvel * MainComponent.DELTA;
+		int   sx = (int)Math.signum(dx);       // The sign of velocity
+		
+		aabb.moveX(dx);
+		
+		for(Entity entity : entities)
+		{
+			if(entity == this || entity.dead())
+				continue;
+			
+			if(entity.colliding(aabb))
+			{
+				if(entity.hasFlags(Entity.FLAG_SOLID))
+				{
+					float moveamt = sx > 0 ? entity.getAABB().getLeft() - aabb.getRight() :
+											 entity.getAABB().getRight() - aabb.getLeft();
+					aabb.moveX(moveamt);
+				}
+				
+				if(hasFlags(Entity.FLAG_SOLID))
+				{
+					float moveamt = sx > 0 ? entity.getAABB().getLeft() - aabb.getRight() :
+						 entity.getAABB().getRight() - aabb.getLeft();
+					entity.getAABB().moveX(-moveamt);
+				}
+			}
+		}
+		
+		/*
+		 * Vertical collision
+		 */
+		
+		/*
+		 * If not moving vertically, don't do the next bit
+		 */
+		if(yvel == 0)
+			return;
+		
+		float dy = yvel * MainComponent.DELTA;
+		int   sy = (int)Math.signum(dy);       // The sign of velocity
+		
+		aabb.moveY(dy);
+		
+		for(Entity entity : entities)
+		{
+			if(entity == this || entity.dead())
+				continue;
+			
+			if(entity.colliding(aabb))
+			{
+				if(entity.hasFlags(Entity.FLAG_SOLID))
+				{
+					float moveamt = sy > 0 ? entity.getAABB().getTop() - aabb.getBottom() :
+											 entity.getAABB().getBottom() - aabb.getTop();
+					aabb.moveY(moveamt);
+				}
+				
+				if(hasFlags(Entity.FLAG_SOLID))
+				{
+					float moveamt = sy > 0 ? entity.getAABB().getTop() - aabb.getBottom() :
+						 entity.getAABB().getBottom() - aabb.getTop();
+					entity.getAABB().moveY(-moveamt);
+				}
+			}
+		}
 	}
 	
 	public void render(Graphics g)
@@ -126,22 +200,21 @@ public class Entity
 	}
 	
 	/**
-	 * @param entity
-	 * 			The other entity
-	 * @return true if this and the provided entity are overlapping
+	 * @param aabb
+	 * 			The other AABB
+	 * @return true if this entity's AABB is overlapping the provided AABB
 	 */
-	public boolean isColliding(Entity entity)
+	public boolean colliding(AABB aabb)
 	{
-		if(getLeft() > entity.getRight())
-			return false;
-		if(entity.getLeft() > getRight())
-			return false;
-		if(getTop() > entity.getBottom())
-			return false;
-		if(entity.getTop() > getBottom())
-			return false;
-		
-		return true;
+		return this.aabb.colliding(aabb);
+	}
+	
+	/**
+	 * Flags entity for removal
+	 */
+	public void die()
+	{
+		dead = true;
 	}
 	
 	/**
@@ -153,75 +226,11 @@ public class Entity
 	}
 	
 	/**
-	 * @return left edge of the hitbox
+	 * @return the hitbox of this entity
 	 */
-	public float getLeft()
+	public AABB getAABB()
 	{
-		return x;
-	}
-	
-	/**
-	 * @return right edge of the hitbox
-	 */
-	public float getRight()
-	{
-		return x + w;
-	}
-	
-	/**
-	 * @return top edge of the hitbox
-	 */
-	public float getTop()
-	{
-		return y;
-	}
-	
-	/**
-	 * @return bottom edge of the hitbox
-	 */
-	public float getBottom()
-	{
-		return y + h;
-	}
-
-	public float getX()
-	{
-		return x;
-	}
-
-	public void setX(float x)
-	{
-		this.x = x;
-	}
-
-	public float getY()
-	{
-		return y;
-	}
-
-	public void setY(float y)
-	{
-		this.y = y;
-	}
-
-	public float getW()
-	{
-		return w;
-	}
-
-	public void setW(float w)
-	{
-		this.w = w;
-	}
-
-	public float getH()
-	{
-		return h;
-	}
-
-	public void setH(float h)
-	{
-		this.h = h;
+		return aabb;
 	}
 
 	public float getXvel()

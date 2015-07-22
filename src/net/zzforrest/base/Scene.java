@@ -19,14 +19,12 @@ public class Scene
 	
 	public void update(Input input)
 	{
-		//TODO: Collision
-		
 		/*
-		 * Update all entities in the list
+		 * Update all alive entities in the list
 		 */
-		
 		for(Entity entity : entities)
-			entity.update(input);
+			if(!entity.dead())
+				entity.update(input);
 		
 		/*
 		 * Remove dead entities
@@ -51,5 +49,10 @@ public class Scene
 	public void addEntity(Entity entity)
 	{
 		entities.add(entity);
+	}
+	
+	public ArrayList<Entity> getEntities()
+	{
+		return entities;
 	}
 }
