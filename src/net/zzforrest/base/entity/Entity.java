@@ -19,7 +19,8 @@ public class Entity
 	/*
 	 * List of predefined flags
 	 */
-	public static final long FLAG_SOLID          = 1 << 0; // Other entities cannot overlap this one
+	public static final long FLAG_SOLID    = 1 << 0; // Other entities cannot overlap this one
+//	public static final long FLAG_PUSHABLE = 1 << 1; // This entity can be pushed by others
 	
 	/*
 	 * Scene information
@@ -91,19 +92,14 @@ public class Entity
 			
 			if(entity.colliding(aabb))
 			{
-				if(entity.hasFlags(Entity.FLAG_SOLID))
-				{
-					float moveamt = sx > 0 ? entity.getAABB().getLeft() - aabb.getRight() :
-											 entity.getAABB().getRight() - aabb.getLeft();
-					aabb.moveX(moveamt);
-				}
+				float moveamt = sx > 0 ? entity.getAABB().getLeft() - aabb.getRight() :
+					 					 entity.getAABB().getRight() - aabb.getLeft();
 				
-				if(hasFlags(Entity.FLAG_SOLID))
-				{
-					float moveamt = sx > 0 ? entity.getAABB().getLeft() - aabb.getRight() :
-						 entity.getAABB().getRight() - aabb.getLeft();
+				if(entity.hasFlags(Entity.FLAG_SOLID))
+					aabb.moveX(moveamt);
+				
+				if(hasFlags(Entity.FLAG_SOLID) && !entity.hasFlags(Entity.FLAG_SOLID))
 					entity.getAABB().moveX(-moveamt);
-				}
 			}
 		}
 		
@@ -129,19 +125,14 @@ public class Entity
 			
 			if(entity.colliding(aabb))
 			{
-				if(entity.hasFlags(Entity.FLAG_SOLID))
-				{
-					float moveamt = sy > 0 ? entity.getAABB().getTop() - aabb.getBottom() :
-											 entity.getAABB().getBottom() - aabb.getTop();
-					aabb.moveY(moveamt);
-				}
+				float moveamt = sy > 0 ? entity.getAABB().getTop() - aabb.getBottom() :
+					 					 entity.getAABB().getBottom() - aabb.getTop();
 				
-				if(hasFlags(Entity.FLAG_SOLID))
-				{
-					float moveamt = sy > 0 ? entity.getAABB().getTop() - aabb.getBottom() :
-						 entity.getAABB().getBottom() - aabb.getTop();
+				if(entity.hasFlags(Entity.FLAG_SOLID))
+					aabb.moveY(moveamt);
+
+				if(hasFlags(Entity.FLAG_SOLID) && !entity.hasFlags(Entity.FLAG_SOLID))
 					entity.getAABB().moveY(-moveamt);
-				}
 			}
 		}
 	}

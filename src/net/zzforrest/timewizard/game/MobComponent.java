@@ -1,6 +1,7 @@
-package net.zzforrest.base.entity.component;
+package net.zzforrest.timewizard.game;
 
 import net.zzforrest.base.Input;
+import net.zzforrest.base.entity.component.Component;
 
 /*
  * Gives information and functions for things like health

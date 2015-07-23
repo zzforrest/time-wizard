@@ -17,7 +17,7 @@ public class BasicAIComponent extends Component
 			yimpulse = (int)(Math.random() * 3) - 1;
 		}
 		
-		parent.setXvel(ximpulse * 30);
-		parent.setYvel(yimpulse * 30);
+		parent.setXvel(ximpulse * 60);
+		parent.setYvel(yimpulse * 60);
 	}
 }

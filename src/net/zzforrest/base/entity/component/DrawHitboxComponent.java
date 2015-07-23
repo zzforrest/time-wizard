@@ -25,6 +25,6 @@ public class DrawHitboxComponent extends Component
 	public void render(Graphics g)
 	{
 		g.setColor(color);
-		g.drawRect((int)parent.getAABB().getX(), (int)parent.getAABB().getY(), (int)parent.getAABB().getW(), (int)parent.getAABB().getH());
+		g.fillRect((int)parent.getAABB().getX(), (int)parent.getAABB().getY(), (int)parent.getAABB().getW(), (int)parent.getAABB().getH());
 	}
 }

@@ -24,10 +24,10 @@ public class TWGame extends Game
 		player.getAABB().setW(32);
 		player.getAABB().setH(32);
 		
-		for(int i = 0; i < 175; i ++)
+		for(int i = 0; i < 150; i ++)
 		{
 			Entity object = new Entity(scene)
-				.addComponent(new DrawHitboxComponent(new Color((float)Math.random(), (float)Math.random(), (float)Math.random())))
+				.addComponent(new DrawHitboxComponent(new Color(0, 0, 0)))
 				.addComponent(new BasicAIComponent())
 				.addFlag(Entity.FLAG_SOLID)
 				;
